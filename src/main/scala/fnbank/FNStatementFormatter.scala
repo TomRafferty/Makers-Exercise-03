@@ -1,22 +1,22 @@
 package fnbank
 
-import oobank.Transaction
+import oobank.OOTransaction
 
 object FNStatementFormatter {
   val StatementHeader: String = formatLine("Amount", "Date", "Balance")
 
-  def format: Seq[Transaction] => String =
-    sortTransactions _ andThen
-      formatTransactions(0) andThen
+  def format: Seq[OOTransaction] => String =
+    sortOOTransactions _ andThen
+      formatOOTransactions(0) andThen
       addHeader
 
-  private def sortTransactions(txns: Seq[Transaction]) =
+  private def sortOOTransactions(txns: Seq[OOTransaction]) =
     txns.sortBy(tx => tx.date)
 
-  private def formatTransactions: Int => Seq[Transaction] => String = (startingBalance: Int) => {
+  private def formatOOTransactions: Int => Seq[OOTransaction] => String = (startingBalance: Int) => {
     case Nil => ""
     case tx :: txs =>
-      formatTransactions(startingBalance + tx.amount)(txs)
+      formatOOTransactions(startingBalance + tx.amount)(txs)
         .concat(formatLine(tx.amount, tx.date, startingBalance + tx.amount))
   }
 
