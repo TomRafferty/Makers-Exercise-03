@@ -8,7 +8,7 @@ class AccountTest extends AnyWordSpec with Matchers{
   val testDate = LocalDateTime.now(ZoneId.of("UTC"))
   val testDateLocal = testDate.toLocalDate
 
-  "OOAccount" should {
+  "Account" should {
 
     "Have a balance" in {
       val acc = new Account

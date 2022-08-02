@@ -1,23 +1,21 @@
 package myMix
 
-import oobank.OOTransaction
-
-object StatementFormatter {
+class StatementFormatter{
   val StatementHeader: String = formatLine("Amount", "Date", "Balance")
 
-  def format: Seq[OOTransaction] => String =
+  def format: Seq[Transaction] => String =
     sortTransactions _ andThen
       formatTransactions(0) andThen
       addHeader
 
-  private def sortTransactions(txns: Seq[OOTransaction]) =
-    txns.sortBy(tx => tx.date)
+  private def sortTransactions(txns: Seq[Transaction]) =
+    txns.sortBy(tx => tx.getDate)
 
-  private def formatTransactions: Int => Seq[OOTransaction] => String = (startingBalance: Int) => {
+  private def formatTransactions: Double => Seq[Transaction] => String = (startingBalance: Double) => {
     case Nil => ""
     case tx :: txs =>
-      formatTransactions(startingBalance + tx.amount)(txs)
-        .concat(formatLine(tx.amount, tx.date, startingBalance + tx.amount))
+      formatTransactions(startingBalance + tx.getAmount)(txs)
+        .concat(formatLine(tx.getAmount, tx.getDate, startingBalance + tx.getAmount))
   }
 
   private def addHeader(formattedTxns: String): String = StatementHeader.concat(formattedTxns)
