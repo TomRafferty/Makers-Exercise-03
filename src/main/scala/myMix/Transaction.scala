@@ -1,3 +1,5 @@
+package myMix
+
 import java.time.LocalDate
 
 class Transaction(transactionAmount: Double, transactionDate: LocalDate){

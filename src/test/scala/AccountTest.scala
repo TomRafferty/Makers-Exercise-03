@@ -1,3 +1,4 @@
+import myMix.Account
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
@@ -7,7 +8,7 @@ class AccountTest extends AnyWordSpec with Matchers{
   val testDate = LocalDateTime.now(ZoneId.of("UTC"))
   val testDateLocal = testDate.toLocalDate
 
-  "Account" should {
+  "OOAccount" should {
 
     "Have a balance" in {
       val acc = new Account

@@ -1,3 +1,5 @@
+package myMix
+
 import java.time.LocalDate
 import scala.collection.mutable.ArrayBuffer
 
