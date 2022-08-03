@@ -34,5 +34,14 @@ class AccountTest extends AnyWordSpec with Matchers{
       assert(acc.transactions.toArray.head.getDate === testDateLocal)
     }
 
+    "have the correct amount of money in balance" in {
+      val acc = new Account
+      acc.deposit(50.0, testDateLocal)
+      acc.withdraw(1.0, testDateLocal)
+      acc.deposit(10.0, testDateLocal)
+      acc.withdraw(34.0, testDateLocal)
+      assert(acc.balance === 25.0)
+
+    }
   }
 }
