@@ -13,6 +13,7 @@ class StatementFormatterTest extends AnyWordSpec with Matchers {
       val acc = new Account
       val newStatement = new StatementFormatter
       val formattedStatement = newStatement.format(acc.transactions.toSeq)
+      println(s"contains heads test: $formattedStatement")
       assert(formattedStatement.contains("Amount,Date,Balance"))
     }
 
@@ -21,6 +22,7 @@ class StatementFormatterTest extends AnyWordSpec with Matchers {
       acc.deposit(5.0, testDate)
       val newStatement = new StatementFormatter
       val formattedStatement = newStatement.format(acc.transactions.toSeq)
+      println(s"formatting test: $formattedStatement")
       assert(formattedStatement.contains(s"Amount,Date,Balance\n5.0,$testDate,5.0"))
     }
 
@@ -31,6 +33,7 @@ class StatementFormatterTest extends AnyWordSpec with Matchers {
       acc.deposit(50.0, oldDate)
       val newStatement = new StatementFormatter
       val formattedStatement = newStatement.format(acc.transactions.toSeq)
+      println(s"order transactions by date: $formattedStatement")
       assert(formattedStatement.contains(f"""|Amount,Date,Balance
                                              |5.0,$testDate,55.0
                                              |50.0,$oldDate,50.0""".stripMargin))
