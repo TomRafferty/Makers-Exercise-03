@@ -1,21 +1,39 @@
 package myMix
 
+import scala.annotation.tailrec
+
 class StatementFormatter{
   val StatementHeader: String = formatLine("Amount", "Date", "Balance")
 
-  def format: Seq[Transaction] => String =
-    sortTransactions _ andThen
-      formatTransactions(0) andThen
-      addHeader
+  def format(transactions: Seq[Transaction]): String = {
+    if(transactions.length > 0){
+      val sorted = sortTransactions(transactions)
+      val formatted = newFormatter(sorted)
+      addHeader(formatted)
+    }else{
+      StatementHeader
+    }
+  }
 
-  private def sortTransactions(txns: Seq[Transaction]) =
-    txns.sortBy(tx => tx.getDate)
+  //TODO this is not functioning correctly.
+  private def sortTransactions(txns: Seq[Transaction]): Seq[Transaction] = txns.sortBy(tx => tx.getDate)
 
-  private def formatTransactions: Double => Seq[Transaction] => String = (startingBalance: Double) => {
-    case Nil => ""
-    case tx :: txs =>
-      formatTransactions(startingBalance + tx.getAmount)(txs)
-        .concat(formatLine(tx.getAmount, tx.getDate, startingBalance + tx.getAmount))
+  @tailrec
+  private def newFormatter(transactions: Seq[Transaction], thisString: String = "", count: Int = 0, startingBalance: Double = 0): String ={
+    val newCount = count + 1
+    if(count == transactions.length){
+      thisString
+    }else{
+      val currentTxn = transactions(count)
+      val newString = {
+        if(thisString.length > 0){
+          s"$thisString\n${currentTxn.getAmount},${currentTxn.getDate},${currentTxn.getAmount + startingBalance}"
+        }else{
+          s"${currentTxn.getAmount},${currentTxn.getDate},${currentTxn.getAmount + startingBalance}"
+        }
+      }
+      newFormatter(transactions = transactions,thisString = newString, count = newCount, startingBalance = startingBalance+currentTxn.getAmount)
+    }
   }
 
   private def addHeader(formattedTxns: String): String = StatementHeader.concat(formattedTxns)
