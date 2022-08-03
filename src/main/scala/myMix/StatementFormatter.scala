@@ -16,7 +16,7 @@ class StatementFormatter{
   }
 
   //TODO this is not functioning correctly.
-  private def sortTransactions(txns: Seq[Transaction]): Seq[Transaction] = txns.sortBy(tx => tx.getDate).reverse
+  private def sortTransactions(txns: Seq[Transaction]): Seq[Transaction] = txns.sortBy(tx => tx.getDate)
 
   @tailrec
   private def newFormatter(transactions: Seq[Transaction], thisString: String = "", count: Int = 0, startingBalance: Double = 0): String ={

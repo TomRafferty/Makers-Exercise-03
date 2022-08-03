@@ -29,8 +29,8 @@ class StatementFormatterTest extends AnyWordSpec with Matchers {
       val date3 = LocalDate.parse("2011-01-01")
       val date4 = LocalDate.parse("2010-01-01")
       val acc = new Account
-      acc.withdraw(1, date4)
-      acc.deposit(1,date3)
+      acc.deposit(1,date4)
+      acc.withdraw(1, date3)
       acc.deposit(50.0, date2)
       acc.deposit(5.0, testDate)
       val newStatement = new StatementFormatter
@@ -38,10 +38,10 @@ class StatementFormatterTest extends AnyWordSpec with Matchers {
       println(formattedStatement)
       println(acc.balance)
       assert(formattedStatement.contains(f"""|Amount,Date,Balance
-                                             |5.0,$testDate,55.0
+                                             |1.0,$date4,1.0
+                                             |-1.0,$date3,0.0
                                              |50.0,$date2,50.0
-                                             |-1.0, $date3,0.0
-                                             |1.0, $date4, 1.0""".stripMargin))
+                                             |5.0,$testDate,55.0""".stripMargin))
     }
   }
 }
