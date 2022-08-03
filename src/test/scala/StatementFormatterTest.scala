@@ -4,9 +4,18 @@ import org.scalatest.wordspec.AnyWordSpec
 
 import java.time.{LocalDate, LocalDateTime, ZoneId}
 class StatementFormatterTest extends AnyWordSpec with Matchers {
+
   val testDate = LocalDateTime.now(ZoneId.of("UTC")).toLocalDate
-  val oldDate = LocalDate.parse("2012-08-02")
+
   "StatementFormatter" should {
+
+    "Contains all relevant header columns" in {
+      val acc = new Account
+      val newStatement = new StatementFormatter
+      val formattedStatement = newStatement.format(acc.transactions.toSeq)
+      assert(formattedStatement.contains("Amount,Date,Balance"))
+    }
+
     "Send formatted statement" in {
       val acc = new Account
       acc.deposit(5.0, testDate)
@@ -14,7 +23,9 @@ class StatementFormatterTest extends AnyWordSpec with Matchers {
       val formattedStatement = newStatement.format(acc.transactions.toSeq)
       assert(formattedStatement.contains(s"Amount,Date,Balance\n5.0,$testDate,5.0"))
     }
+
     "Order transactions by date" in {
+      val oldDate = LocalDate.parse("2012-08-02")
       val acc = new Account
       acc.deposit(5.0, testDate)
       acc.deposit(50.0, oldDate)
