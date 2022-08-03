@@ -16,7 +16,7 @@ class StatementFormatter{
   }
 
   //TODO this is not functioning correctly.
-  private def sortTransactions(txns: Seq[Transaction]) = txns.sortBy(tx => tx.getDate)
+  private def sortTransactions(txns: Seq[Transaction]): Seq[Transaction] = txns.sortBy(tx => tx.getDate).reverse
 
   @tailrec
   private def newFormatter(transactions: Seq[Transaction], thisString: String = "", count: Int = 0, startingBalance: Double = 0): String ={
@@ -27,7 +27,7 @@ class StatementFormatter{
       val currentTxn = transactions(count)
       val newString = {
         if(thisString.length > 0){
-          s"\n$thisString\n${currentTxn.getAmount},${currentTxn.getDate},${currentTxn.getAmount + startingBalance}"
+          s"$thisString\n${currentTxn.getAmount},${currentTxn.getDate},${currentTxn.getAmount + startingBalance}"
         }else{
           s"${currentTxn.getAmount},${currentTxn.getDate},${currentTxn.getAmount + startingBalance}"
         }

@@ -13,7 +13,6 @@ class StatementFormatterTest extends AnyWordSpec with Matchers {
       val acc = new Account
       val newStatement = new StatementFormatter
       val formattedStatement = newStatement.format(acc.transactions.toSeq)
-      println(s"contains heads test: $formattedStatement")
       assert(formattedStatement.contains("Amount,Date,Balance"))
     }
 
@@ -22,21 +21,27 @@ class StatementFormatterTest extends AnyWordSpec with Matchers {
       acc.deposit(5.0, testDate)
       val newStatement = new StatementFormatter
       val formattedStatement = newStatement.format(acc.transactions.toSeq)
-      println(s"formatting test: $formattedStatement")
       assert(formattedStatement.contains(s"Amount,Date,Balance\n5.0,$testDate,5.0"))
     }
 
     "Order transactions by date" in {
-      val oldDate = LocalDate.parse("2012-08-02")
+      val date2 = LocalDate.parse("2012-08-02")
+      val date3 = LocalDate.parse("2011-01-01")
+      val date4 = LocalDate.parse("2010-01-01")
       val acc = new Account
+      acc.withdraw(1, date4)
+      acc.deposit(1,date3)
+      acc.deposit(50.0, date2)
       acc.deposit(5.0, testDate)
-      acc.deposit(50.0, oldDate)
       val newStatement = new StatementFormatter
       val formattedStatement = newStatement.format(acc.transactions.toSeq)
-      println(s"order transactions by date: $formattedStatement")
+      println(formattedStatement)
+      println(acc.balance)
       assert(formattedStatement.contains(f"""|Amount,Date,Balance
                                              |5.0,$testDate,55.0
-                                             |50.0,$oldDate,50.0""".stripMargin))
+                                             |50.0,$date2,50.0
+                                             |-1.0, $date3,0.0
+                                             |1.0, $date4, 1.0""".stripMargin))
     }
   }
 }
