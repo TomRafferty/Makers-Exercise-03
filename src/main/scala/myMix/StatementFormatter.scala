@@ -15,7 +15,7 @@ class StatementFormatter{
     }
   }
 
-  //TODO this is not functioning correctly.
+  //TODO this is not functioning correctly. -> when reversing this it doesn't work out the balance relative to the dates -> even with the change made in Account
   private def sortTransactions(txns: Seq[Transaction]): Seq[Transaction] = txns.sortBy(tx => tx.getDate)
 
   @tailrec
