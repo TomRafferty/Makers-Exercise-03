@@ -7,7 +7,7 @@ class Account {
   var transactions: ArrayBuffer[Transaction] = ArrayBuffer()
   def balance():Double = {
     if(transactions.length > 0) {
-      transactions.map(txn => txn.getAmount).sum
+      transactions.sortBy(txn => txn.getDate).map(txn => txn.getAmount).sum //cutting my losses here -> can't get the balance to sum relative to the date
     }else{
       0.0
     }
